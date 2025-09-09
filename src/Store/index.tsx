@@ -13,16 +13,18 @@ import {
   REHYDRATE
 } from 'redux-persist'
 import medicineDetailSlice from '../Redux/MedicineDetail/Reducer'
+import medicineListSlice from '../Redux/MedicineList/Reducer'
 
 const reducers = combineReducers({
   auth: authSlice,
-  medicineDetail: medicineDetailSlice
+  medicineDetail: medicineDetailSlice,
+  medicineList: medicineListSlice
 })
 
 const persistConfig = {
   key: 'root',
   storage: storage,
-  whitelist: ['auth', 'medicineDetail']
+  whitelist: ['auth', 'medicineDetail', 'medicineList']
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)

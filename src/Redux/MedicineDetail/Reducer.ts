@@ -1,15 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
 
 export type T_MEDICINE_DETAIL = {
-  id: string
+  id: string // e.g. week id
   from: Date | null
   to: Date | null
-  medicine:
-    | {
-        name: string
-        time?: string
-      }[]
-    | []
+  medicine: { medicineId: string; time: string }[]
 }
 
 const initialState: T_MEDICINE_DETAIL[] = [
@@ -27,26 +23,51 @@ export const medicineDetailSlice = createSlice({
   name: SLICE_NAME,
   initialState,
   reducers: {
-    saveLogin: (state, action) => {
-      // state.id = action.payload.id
-      // state.username = action.payload.username
-      // state.firstName = action.payload.firstName
-      // state.lastName = action.payload.lastName
-      // state.gender = action.payload.gender
-      // state.image = action.payload.image
-      // state.token = action.payload.token
+    addMedicineToWeek: (
+      state,
+      action: PayloadAction<{
+        weekId: string
+        medicines: { medicineId: string; time: string }[]
+      }>
+    ) => {
+      const week = state.find(w => w.id === action.payload.weekId)
+      if (week) {
+        week.medicine.push(...action.payload.medicines)
+      }
     },
-    removeLogin: state => {
-      // state.id = null
-      // state.username = null
-      // state.firstName = null
-      // state.lastName = null
-      // state.gender = null
-      // state.image = null
-      // state.token = null
+    removeMedicineFromWeek: (
+      state,
+      action: PayloadAction<{
+        weekId: string
+        medicineId: string
+      }>
+    ) => {
+      const week = state.find(w => w.id === action.payload.weekId)
+      if (week) {
+        week.medicine = week.medicine.filter(
+          m => m.medicineId !== action.payload.medicineId
+        )
+      }
     }
   }
 })
+// dispatch(
+//   addMedicineToWeek({
+//     weekId: 'week 1',
+//     medicines: [
+//       { medicineId: 'id-1', time: '08:00 AM' },
+//       { medicineId: 'id-2', time: '02:00 PM' },
+//       { medicineId: 'id-3', time: '09:00 PM' }
+//     ]
+//   })
+// )
+// dispatch(
+//   removeMedicineFromWeek({
+//     weekId: 'week 1',
+//     medicineId: 'id-3'
+//   })
+// )
 
-export const { saveLogin, removeLogin } = medicineDetailSlice.actions
+export const { addMedicineToWeek, removeMedicineFromWeek } =
+  medicineDetailSlice.actions
 export default medicineDetailSlice.reducer

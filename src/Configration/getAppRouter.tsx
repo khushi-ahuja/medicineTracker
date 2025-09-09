@@ -30,13 +30,29 @@ const MainLayout = lazyLoadPage(
 // Pages & Loaders
 
 // Home
-const HomeLoader = lazyLoadLoader(
-  () => import(/* webpackChunkName: "HomeLoader" */ '../Pages/Home/Home.Loader')
-)
 
 const HomePage = lazyLoadPage(
   () => import(/* webpackChunkName: "HomePage" */ '../Pages/Home/Home.Page'),
   'HomePage'
+)
+
+const HomeLoader = lazyLoadLoader(
+  () => import(/* webpackChunkName: "HomeLoader" */ '../Pages/Home/Home.Loader')
+)
+
+const MedicineListPage = lazyLoadPage(
+  () =>
+    import(
+      /* webpackChunkName: "HomePage" */ '../Pages/MedicineList/MedicineListPage.Page'
+    ),
+  'MedicinePage'
+)
+
+const MedicineListLoader = lazyLoadLoader(
+  () =>
+    import(
+      /* webpackChunkName: "HomeLoader" */ '../Pages/MedicineList/MedicineListPage.Loader'
+    )
 )
 
 // About
@@ -111,7 +127,13 @@ const routeObj: RouteObject[] = [
         path: APP_ROUTES.HOME.pathname,
         loader: HomeLoader,
         element: HomePage
+      },
+      {
+        path: APP_ROUTES.MEDICINE_LIST.pathname,
+        loader: MedicineListLoader,
+        element: MedicineListPage
       }
+      // MedicineListPage
     ]
   }
   // {

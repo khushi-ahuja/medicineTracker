@@ -9,8 +9,9 @@ const APP_ROUTES = {
   HOME: {
     pathname: '/'
   } as AppRouteItem,
-  ABOUT: {
-    pathname: '/about'
+
+  MEDICINE_LIST: {
+    pathname: '/medicine-list'
   } as AppRouteItem,
 
   ANY: {
@@ -19,18 +20,6 @@ const APP_ROUTES = {
 
   SOMETHING_WENT_WRONG: {
     pathname: '/something-went-wrong'
-  } as AppRouteItem,
-
-  UNSUPPORTED_BROWSERS: {
-    pathname: '/unsupported-browsers'
-  } as AppRouteItem,
-
-  DEFAULT_UNAUTH_FALLBACK: {
-    pathname: '/'
-  } as AppRouteItem,
-
-  DEFAULT_AUTH_FALLBACK: {
-    pathname: '/about'
   } as AppRouteItem
 }
 
