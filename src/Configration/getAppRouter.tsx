@@ -55,6 +55,21 @@ const MedicineListLoader = lazyLoadLoader(
     )
 )
 
+const SchedulePage = lazyLoadPage(
+  () =>
+    import(
+      /* webpackChunkName: "HomePage" */ '../Pages/ScheduleDetail/ScheduleDetail.Page'
+    ),
+  'SchedulePage'
+)
+
+const SchedulePageLoader = lazyLoadLoader(
+  () =>
+    import(
+      /* webpackChunkName: "HomeLoader" */ '../Pages/ScheduleDetail/ScheduleDetail.Loader'
+    )
+)
+
 // About
 // const AboutLoader = validatePublicRouteLoader(
 //   () =>
@@ -132,8 +147,12 @@ const routeObj: RouteObject[] = [
         path: APP_ROUTES.MEDICINE_LIST.pathname,
         loader: MedicineListLoader,
         element: MedicineListPage
+      },
+      {
+        path: APP_ROUTES.SCHEDULE.pathname,
+        loader: SchedulePageLoader,
+        element: SchedulePage
       }
-      // MedicineListPage
     ]
   }
   // {

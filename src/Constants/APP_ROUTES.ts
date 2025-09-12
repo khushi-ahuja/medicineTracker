@@ -14,6 +14,10 @@ const APP_ROUTES = {
     pathname: '/medicine-list'
   } as AppRouteItem,
 
+  SCHEDULE: {
+    pathname: '/schedule'
+  } as AppRouteItem,
+
   ANY: {
     pathname: '*'
   } as AppRouteItem,

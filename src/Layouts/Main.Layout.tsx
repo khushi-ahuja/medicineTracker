@@ -1,10 +1,28 @@
 import { BottomNavigation, BottomNavigationAction, Box } from '@mui/material'
 import { RiCapsuleFill, RiFileListLine, RiHome2Line } from '@remixicon/react'
-import { useState, type FC } from 'react'
-import { Outlet } from 'react-router'
+import { useEffect, useState, type FC } from 'react'
+import { Outlet, useLocation, useNavigate } from 'react-router'
+import APP_ROUTES from '../Constants/APP_ROUTES'
 
 const MainLayout: FC = () => {
-  const [value, setValue] = useState(0)
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+
+  const [value, setValue] = useState(APP_ROUTES.HOME.pathname)
+
+  const handleChangeBottomNavigation = (
+    _event: React.SyntheticEvent<Element, Event>,
+    newValue: string
+  ) => {
+    setValue(newValue)
+    navigate(newValue)
+  }
+
+  useEffect(() => {
+    if (value !== pathname) {
+      setValue(pathname)
+    }
+  }, [])
 
   return (
     <Box sx={{ p: '16px', mb: '48px' }}>
@@ -13,13 +31,20 @@ const MainLayout: FC = () => {
         showLabels
         value={value}
         sx={{ position: 'fixed', bottom: 0, left: 0, width: '100%' }}
-        onChange={(event, newValue) => {
-          setValue(newValue)
-        }}
+        onChange={handleChangeBottomNavigation}
       >
-        <BottomNavigationAction label="Currrent" icon={<RiHome2Line />} />
-        <BottomNavigationAction label="Schedule" icon={<RiFileListLine />} />
         <BottomNavigationAction
+          value={APP_ROUTES.HOME.pathname}
+          label="Currrent"
+          icon={<RiHome2Line />}
+        />
+        <BottomNavigationAction
+          value={APP_ROUTES.SCHEDULE.pathname}
+          label="Schedule"
+          icon={<RiFileListLine />}
+        />
+        <BottomNavigationAction
+          value={APP_ROUTES.MEDICINE_LIST.pathname}
           label="Medicine List"
           icon={<RiCapsuleFill />}
         />

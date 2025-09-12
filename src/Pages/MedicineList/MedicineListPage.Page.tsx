@@ -1,31 +1,27 @@
 import React, { useState } from 'react'
-import { Box, Button, Stack, Typography } from '@mui/material'
-import {
-  RiDeleteBinLine,
-  RiMedicineBottleLine,
-  RiPencilLine
-} from '@remixicon/react'
-import { BLUE_SERENITY, GREY } from '../../Constants/COLOR_PALETTES'
-import { IMG_NO_DATA } from '../../Constants/IMAGE'
+import { Button, Stack, Typography } from '@mui/material'
+import { RiDeleteBinLine, RiMedicineBottleLine } from '@remixicon/react'
+import { GREY } from '../../Constants/COLOR_PALETTES'
 import AddMedicine from './Components/AddMedicine.Component'
 import { addMedicine, removeMedicine } from '../../Redux/MedicineList/Reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllMedicines } from '../../Redux/MedicineList/Selector'
+import NoData from '../../Components/NoData'
+import CustomListItem from '../../Components/ListItem'
 
 // TODO: Add confirmation on delete - if added on any schedules
 
 const MedicineListPage: React.FC = () => {
   const dispatch = useDispatch()
-  const [openDialog, setOpenDialog] = useState(false)
-
   const list = useSelector(getAllMedicines)
+
+  const [openDialog, setOpenDialog] = useState(false)
 
   const handleOpenDialog = () => {
     setOpenDialog(!openDialog)
   }
 
   const handleSubmit = (name: string, description: string) => {
-    console.log('name, description', name, description)
     dispatch(addMedicine(name, description))
   }
 
@@ -47,64 +43,24 @@ const MedicineListPage: React.FC = () => {
         {list.length ? (
           list.map(medi => {
             return (
-              <Stack
-                key={medi.id}
-                direction={'row'}
-                alignItems={'center'}
-                justifyContent={'space-between'}
-                gap={'8px'}
-                sx={{
-                  p: '12px',
-                  borderRadius: '8px',
-                  background: BLUE_SERENITY[0],
-                  border: `1px solid ${BLUE_SERENITY[1]}`
-                }}
-              >
-                <Stack direction={'row'} alignItems={'center'} gap={'12px'}>
-                  <Box
-                    sx={{
-                      p: '6px',
-                      border: `1px solid ${BLUE_SERENITY[4]}`,
-                      background: BLUE_SERENITY[3],
-                      borderRadius: '8px'
-                    }}
-                  >
-                    <RiMedicineBottleLine />
-                  </Box>
-                  <Stack>
-                    <Typography variant="subtitle2">{medi.name}</Typography>
-                    <Typography variant="caption" sx={{ color: GREY[5] }}>
-                      {medi.description}
-                    </Typography>
-                  </Stack>
+              <CustomListItem key={medi.id} icon={<RiMedicineBottleLine />}>
+                <Stack>
+                  <Typography variant="subtitle2">{medi.name}</Typography>
+                  <Typography variant="caption" sx={{ color: GREY[5] }}>
+                    {medi.description}
+                  </Typography>
                 </Stack>
                 <Stack direction={'row'} alignItems={'center'} gap={'10px'}>
                   <RiDeleteBinLine
                     onClick={() => dispatch(removeMedicine(medi.id))}
                   />
-                  <RiPencilLine />
+                  {/* TODO:  <RiPencilLine /> */}
                 </Stack>
-              </Stack>
+              </CustomListItem>
             )
           })
         ) : (
-          <Stack justifyContent={'center'} gap={'16px'}>
-            <img
-              srcSet={`${IMG_NO_DATA}`}
-              src={`${IMG_NO_DATA}`}
-              alt={'no data illustration'}
-              loading="lazy"
-            />
-            <Typography
-              variant="subtitle1"
-              sx={{ padding: '8px', textAlign: 'center' }}
-            >
-              Oops! Seems like no medicine is listed.
-            </Typography>
-            <Button variant="outlined" onClick={handleOpenDialog}>
-              Add Medicine
-            </Button>
-          </Stack>
+          <NoData handleOpenDialog={handleOpenDialog} btnText="Add Medicine" />
         )}
       </Stack>
 

@@ -12,19 +12,19 @@ import {
   REGISTER,
   REHYDRATE
 } from 'redux-persist'
-import medicineDetailSlice from '../Redux/MedicineDetail/Reducer'
 import medicineListSlice from '../Redux/MedicineList/Reducer'
+import medicineScheduleSlice from '../Redux/MedicineSchedule/Reducer'
 
 const reducers = combineReducers({
   auth: authSlice,
-  medicineDetail: medicineDetailSlice,
-  medicineList: medicineListSlice
+  medicineList: medicineListSlice,
+  medicineSchedule: medicineScheduleSlice
 })
 
 const persistConfig = {
   key: 'root',
   storage: storage,
-  whitelist: ['auth', 'medicineDetail', 'medicineList']
+  whitelist: ['auth', 'medicineDetail', 'medicineList', 'medicineSchedule']
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)
@@ -38,6 +38,10 @@ const store = configureStore({
       }
     })
 })
+
+// infer types
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
 
 const persistor = persistStore(store)
 export { store, persistor }
