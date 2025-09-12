@@ -13,6 +13,7 @@ import {
 } from '@remixicon/react'
 import CustomListItem from '../../Components/ListItem'
 import { BLUE_SERENITY } from '../../Constants/COLOR_PALETTES'
+import AddMedicine from './Components/AddMedicine'
 
 const Label: React.FC<{ icon: ReactNode; text: string | number }> = ({
   icon,
@@ -29,7 +30,15 @@ const Label: React.FC<{ icon: ReactNode; text: string | number }> = ({
 const ScheduleDetail: React.FC = () => {
   const dispatch = useDispatch()
   const schedules = useSelector((state: RootState) => selectAllSchedules(state))
+
   const [openDialog, setOpenDialog] = useState(false)
+  const [selectedWeekId, setSelectedWeekId] = useState<string | null>(null)
+  const [openMedicineDialog, setOpenMedicineDialog] = useState(false)
+
+  const handleOpenMedicineDialog = (id: string | null) => {
+    setSelectedWeekId(id)
+    setOpenMedicineDialog(true)
+  }
 
   const handleOpenDialog = () => {
     setOpenDialog(!openDialog)
@@ -43,7 +52,6 @@ const ScheduleDetail: React.FC = () => {
     console.log('abel, startDate, endDate', payload)
     dispatch(addNewWeek(payload))
   }
-  console.log('schedules', schedules)
 
   return (
     <>
@@ -91,6 +99,7 @@ const ScheduleDetail: React.FC = () => {
                         }
                       />
                       <IconButton
+                        onClick={() => handleOpenMedicineDialog(sched.id)}
                         sx={{
                           borderRadius: '8px',
                           border: `1px solid ${BLUE_SERENITY[3]}`,
@@ -124,6 +133,14 @@ const ScheduleDetail: React.FC = () => {
         handleClose={handleOpenDialog}
         handleSubmit={handleSubmit}
       />
+
+      {openMedicineDialog && selectedWeekId && (
+        <AddMedicine
+          open={openMedicineDialog}
+          handleClose={() => handleOpenMedicineDialog(null)}
+          weekId={selectedWeekId}
+        />
+      )}
     </>
   )
 }

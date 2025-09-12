@@ -58,7 +58,7 @@ const AddWeek: React.FC<IAddWeekProps> = ({
   }
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleClose} fullWidth>
       <Stack sx={{ p: '16px' }} gap={'12px'}>
         <Stack gap={'4px'}>
           <Typography variant="h6">Add Week</Typography>

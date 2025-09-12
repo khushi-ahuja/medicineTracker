@@ -35,7 +35,7 @@ const AddMedicine: React.FC<IAddMedicineProps> = ({
 
   const isEnable = !!(details.name.length > 3 && details.description.length > 2)
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleClose} fullWidth>
       <Stack sx={{ p: '16px' }} gap={'12px'}>
         <Stack gap={'4px'}>
           <Typography variant="h6">Add Medicine</Typography>
