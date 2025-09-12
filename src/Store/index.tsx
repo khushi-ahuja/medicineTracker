@@ -14,17 +14,25 @@ import {
 } from 'redux-persist'
 import medicineListSlice from '../Redux/MedicineList/Reducer'
 import medicineScheduleSlice from '../Redux/MedicineSchedule/Reducer'
+import medicineLogSlice from '../Redux/MedicineLog/Reducer'
 
 const reducers = combineReducers({
   auth: authSlice,
   medicineList: medicineListSlice,
-  medicineSchedule: medicineScheduleSlice
+  medicineSchedule: medicineScheduleSlice,
+  medicineLog: medicineLogSlice
 })
 
 const persistConfig = {
   key: 'root',
   storage: storage,
-  whitelist: ['auth', 'medicineDetail', 'medicineList', 'medicineSchedule']
+  whitelist: [
+    'auth',
+    'medicineDetail',
+    'medicineList',
+    'medicineSchedule',
+    'medicineLog'
+  ]
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)

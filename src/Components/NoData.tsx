@@ -5,12 +5,14 @@ import { IMG_NO_DATA } from '../Constants/IMAGE'
 interface INoDataProps {
   handleOpenDialog?: () => void
   btnText?: string
+  descriptionText?: string
   hideBtn?: boolean
 }
 
 const NoData: React.FC<INoDataProps> = ({
   handleOpenDialog,
   btnText = 'Add',
+  descriptionText,
   hideBtn = false
 }) => {
   return (
@@ -22,8 +24,11 @@ const NoData: React.FC<INoDataProps> = ({
         loading="lazy"
         style={{ maxWidth: '450px', width: '100%' }}
       />
-      <Typography variant="subtitle1" sx={{ padding: '8px' }}>
-        Oops! Seems like no medicine is listed.
+      <Typography
+        variant="subtitle1"
+        sx={{ padding: '8px', textAlign: 'center' }}
+      >
+        {descriptionText ?? 'Oops! Seems like no medicine is listed.'}
       </Typography>
       {!hideBtn && (
         <Button variant="outlined" onClick={handleOpenDialog} fullWidth>
