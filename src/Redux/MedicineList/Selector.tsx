@@ -1,8 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit'
 import { SLICE_NAME, type T_MEDICINE } from './Reducer'
+import type { RootState } from '../../Store'
 
 // base selector
-const selectMedicineList = (state: any) => state[SLICE_NAME]
+const selectMedicineList = (state: RootState) => state[SLICE_NAME]
 
 // 1️⃣ get the whole list
 export const getAllMedicines = createSelector(

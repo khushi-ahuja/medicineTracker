@@ -18,12 +18,20 @@ export const selectScheduleById = (weekId: string) =>
 export const selectMedicinesInWeek = (weekId: string) =>
   createSelector(
     [selectScheduleById(weekId)],
-    schedule => schedule?.medicine ?? []
+    (schedule: T_MEDICINE_SCHEDULE | undefined) => schedule?.medicine ?? []
   )
 
-// Get times for a specific medicine in a week
-export const selectMedicineTimes = (weekId: string, medicineId: string) =>
-  createSelector([selectScheduleById(weekId)], schedule => {
-    const med = schedule?.medicine.find(m => m.medicineId === medicineId)
-    return med?.times ?? []
-  })
+// Get the schedule for the current date
+export const selectTodaySchedule = createSelector(
+  [selectAllSchedules],
+  (schedules: T_MEDICINE_SCHEDULE[]) => {
+    const today = new Date()
+    const todayTime = today.getTime()
+
+    return schedules.find(schedule => {
+      const fromTime = new Date(schedule.from).getTime()
+      const toTime = new Date(schedule.to).getTime()
+      return todayTime >= fromTime && todayTime <= toTime
+    })
+  }
+)

@@ -1,4 +1,4 @@
-import React, { useState, type ReactNode } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAllSchedules } from '../../Redux/MedicineSchedule/Selector'
 import type { RootState } from '../../Store'
@@ -11,33 +11,30 @@ import {
   RiMedicineBottleLine,
   RiOrganizationChart
 } from '@remixicon/react'
-import CustomListItem from '../../Components/ListItem'
+import CustomListItem from '../../Components/CustomListItem'
 import { BLUE_SERENITY } from '../../Constants/COLOR_PALETTES'
 import AddMedicine from './Components/AddMedicine'
-
-const Label: React.FC<{ icon: ReactNode; text: string | number }> = ({
-  icon,
-  text
-}) => {
-  return (
-    <Stack direction={'row'} gap={'8px'}>
-      {icon}
-      <Typography variant="caption">{text}</Typography>{' '}
-    </Stack>
-  )
-}
+import CustomLabel from '../../Components/CustomLabel'
+import WeekDetail from './Components/WeekDetail'
 
 const ScheduleDetail: React.FC = () => {
   const dispatch = useDispatch()
   const schedules = useSelector((state: RootState) => selectAllSchedules(state))
 
+  // TODO: add readable details of that week's list in dialog etc
   const [openDialog, setOpenDialog] = useState(false)
   const [selectedWeekId, setSelectedWeekId] = useState<string | null>(null)
   const [openMedicineDialog, setOpenMedicineDialog] = useState(false)
+  const [openWeekDetail, setOpenWeekDetail] = useState(false)
 
   const handleOpenMedicineDialog = (id: string | null) => {
     setSelectedWeekId(id)
-    setOpenMedicineDialog(true)
+    setOpenMedicineDialog(!openMedicineDialog)
+  }
+
+  const handleOpenWeekDetailDialog = (id: string | null) => {
+    setSelectedWeekId(id)
+    setOpenWeekDetail(!openWeekDetail)
   }
 
   const handleOpenDialog = () => {
@@ -49,7 +46,6 @@ const ScheduleDetail: React.FC = () => {
     from: string
     to: string
   }) => {
-    console.log('abel, startDate, endDate', payload)
     dispatch(addNewWeek(payload))
   }
 
@@ -73,7 +69,11 @@ const ScheduleDetail: React.FC = () => {
           {schedules.length ? (
             schedules.map(sched => {
               return (
-                <CustomListItem key={sched.id} icon={<RiOrganizationChart />}>
+                <CustomListItem
+                  key={sched.id}
+                  icon={<RiOrganizationChart />}
+                  onClick={() => handleOpenWeekDetailDialog(sched.id)}
+                >
                   <Stack width={'100%'}>
                     <Typography variant="subtitle2">{sched.label}</Typography>
                     <Stack
@@ -82,7 +82,7 @@ const ScheduleDetail: React.FC = () => {
                       direction={'row'}
                       sx={{ width: '100%' }}
                     >
-                      <Label
+                      <CustomLabel
                         text={sched.from}
                         icon={
                           <RiCalendarLine
@@ -90,7 +90,7 @@ const ScheduleDetail: React.FC = () => {
                           />
                         }
                       />
-                      <Label
+                      <CustomLabel
                         text={sched.to}
                         icon={
                           <RiCalendarLine
@@ -99,14 +99,17 @@ const ScheduleDetail: React.FC = () => {
                         }
                       />
                       <IconButton
-                        onClick={() => handleOpenMedicineDialog(sched.id)}
+                        onClick={e => {
+                          e.stopPropagation()
+                          handleOpenMedicineDialog(sched.id)
+                        }}
                         sx={{
                           borderRadius: '8px',
                           border: `1px solid ${BLUE_SERENITY[3]}`,
                           background: BLUE_SERENITY[1]
                         }}
                       >
-                        <Label
+                        <CustomLabel
                           text={sched.medicine.length}
                           icon={
                             <RiMedicineBottleLine
@@ -133,14 +136,16 @@ const ScheduleDetail: React.FC = () => {
         handleClose={handleOpenDialog}
         handleSubmit={handleSubmit}
       />
-
-      {openMedicineDialog && selectedWeekId && (
-        <AddMedicine
-          open={openMedicineDialog}
-          handleClose={() => handleOpenMedicineDialog(null)}
-          weekId={selectedWeekId}
-        />
-      )}
+      <AddMedicine
+        open={openMedicineDialog}
+        handleClose={() => handleOpenMedicineDialog(null)}
+        weekId={selectedWeekId || ''}
+      />
+      <WeekDetail
+        open={openWeekDetail}
+        handleClose={() => handleOpenWeekDetailDialog(null)}
+        weekId={selectedWeekId || ''}
+      />
     </>
   )
 }

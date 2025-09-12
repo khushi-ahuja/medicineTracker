@@ -5,11 +5,13 @@ import { IMG_NO_DATA } from '../Constants/IMAGE'
 interface INoDataProps {
   handleOpenDialog?: () => void
   btnText?: string
+  hideBtn?: boolean
 }
 
 const NoData: React.FC<INoDataProps> = ({
   handleOpenDialog,
-  btnText = 'Add'
+  btnText = 'Add',
+  hideBtn = false
 }) => {
   return (
     <Stack justifyContent={'center'} alignItems={'center'} gap={'16px'}>
@@ -18,14 +20,16 @@ const NoData: React.FC<INoDataProps> = ({
         src={`${IMG_NO_DATA}`}
         alt={'No Data  Illustration'}
         loading="lazy"
-        style={{ maxWidth: '450px' }}
+        style={{ maxWidth: '450px', width: '100%' }}
       />
       <Typography variant="subtitle1" sx={{ padding: '8px' }}>
         Oops! Seems like no medicine is listed.
       </Typography>
-      <Button variant="outlined" onClick={handleOpenDialog} fullWidth>
-        {btnText}
-      </Button>
+      {!hideBtn && (
+        <Button variant="outlined" onClick={handleOpenDialog} fullWidth>
+          {btnText}
+        </Button>
+      )}
     </Stack>
   )
 }

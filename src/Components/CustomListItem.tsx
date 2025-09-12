@@ -5,9 +5,14 @@ import { BLUE_SERENITY } from '../Constants/COLOR_PALETTES'
 interface ICustomListItemProps {
   icon: ReactNode
   children: ReactNode | string
+  onClick?: () => void
 }
 
-const CustomListItem: React.FC<ICustomListItemProps> = ({ icon, children }) => {
+const CustomListItem: React.FC<ICustomListItemProps> = ({
+  icon,
+  children,
+  onClick
+}) => {
   return (
     <Stack
       direction={'row'}
@@ -19,6 +24,7 @@ const CustomListItem: React.FC<ICustomListItemProps> = ({ icon, children }) => {
         background: BLUE_SERENITY[0],
         border: `1px solid ${BLUE_SERENITY[1]}`
       }}
+      onClick={onClick}
     >
       <Stack>
         <Box

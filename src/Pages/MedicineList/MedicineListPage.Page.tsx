@@ -7,7 +7,7 @@ import { addMedicine, removeMedicine } from '../../Redux/MedicineList/Reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllMedicines } from '../../Redux/MedicineList/Selector'
 import NoData from '../../Components/NoData'
-import CustomListItem from '../../Components/ListItem'
+import CustomListItem from '../../Components/CustomListItem'
 
 // TODO: Add confirmation on delete - if added on any schedules
 
