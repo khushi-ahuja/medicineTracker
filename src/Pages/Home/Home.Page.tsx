@@ -10,6 +10,7 @@ import CustomListItem from '../../Components/CustomListItem'
 import CustomLabel from '../../Components/CustomLabel'
 import { GREY } from '../../Constants/COLOR_PALETTES'
 import { getMedicineDetailById } from '../../utils'
+import dayjs from 'dayjs'
 
 const Home: React.FC = () => {
   const currentSchedule = useSelector(selectTodaySchedule)
@@ -20,6 +21,8 @@ const Home: React.FC = () => {
       time: string
     }[]
   >([])
+
+  const today = dayjs().format('dddd, MMMM D, YYYY')
 
   const flatenSchedule = () => {
     if (!currentSchedule) return
@@ -52,7 +55,7 @@ const Home: React.FC = () => {
       <Stack>
         <Typography variant="h5">Hello!</Typography>
         <Typography variant="subtitle1">
-          Here is the schedule for today
+          Here is the schedule for {today}
         </Typography>
       </Stack>
       <Stack gap={'8px'}>
